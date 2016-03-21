@@ -17,12 +17,10 @@ public class ClientBroadcast extends Thread {
     byte[] buf = null;
     String[] availableClients = null;
     InetAddress remoteServer = null;
-    LinkedList<String> fileList = new LinkedList<String>();
     
-    public ClientBroadcast(String i, String folder) {
+    public ClientBroadcast(String i) {
         try {
             remoteServer = InetAddress.getByName(i);
-            populateFileList(new File(folder));
         } catch (UnknownHostException ex) {
             Logger.getLogger(ClientBroadcast.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -43,19 +41,5 @@ public class ClientBroadcast extends Thread {
             } catch (Exception e) {
             }
         }
-    }
-    
-    private void populateFileList(final File folder) {
-        for (final File fileEntry : folder.listFiles()) {
-            if (fileEntry.isDirectory()) {
-            	populateFileList(fileEntry);
-            } else {
-            	fileList.add(fileEntry.getName());
-            }
-        }
-    }
-    
-    public LinkedList<String> getFileList() {
-    	return fileList;
     }
 }
