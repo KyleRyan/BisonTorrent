@@ -3,7 +3,11 @@ package Server;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.ObjectInputStream;
 import java.net.Socket;
+
+import Client.Request;
 
 public class ServerThread extends Thread {
 
@@ -18,6 +22,25 @@ public class ServerThread extends Thread {
 
 	public void run() {
 
+		try {
+			InputStream is = socket.getInputStream();
+			ObjectInputStream ois = new ObjectInputStream(is);
+			while (true) {
+				Request request = (Request) ois.readObject();
+				if (request != null) {
+					switch (request.getRequestType()) {
+					case 0:
+
+						break;
+					case 1:
+
+						break;
+					}
+				}
+			}
+		} catch (Exception e) {
+			System.out.println(e);
+		}
 		// try {
 		// String clients = "None";
 		// for (Map.Entry<InetAddress, Long> entry :
