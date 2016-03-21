@@ -1,4 +1,4 @@
-package assignment.server;
+package Server;
 
 import java.io.*;
 import java.net.*;

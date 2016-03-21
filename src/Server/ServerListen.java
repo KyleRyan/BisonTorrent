@@ -1,7 +1,7 @@
-package assignment.server;
+package Server;
 
-import static assignment.server.Server.clientList;
-import static assignment.server.Server.deleteClient;
+import static Server.Server.clientList;
+import static Server.Server.deleteClient;
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.net.InetAddress;

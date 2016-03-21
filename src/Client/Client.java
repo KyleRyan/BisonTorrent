@@ -1,4 +1,4 @@
-package assignment.client;
+package Client;
 
 import java.io.*;
 import java.net.*;
