@@ -17,7 +17,7 @@ import java.util.logging.Logger;
  */
 public class ClientForm extends javax.swing.JFrame {
 
-	LinkedList<String> fileList = new LinkedList<String>();
+	private static LinkedList<String> fileList = new LinkedList<String>();
 	
     /**
      * Creates new form ClientForm
@@ -43,11 +43,9 @@ public class ClientForm extends javax.swing.JFrame {
         jButton2 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        
-        populateFileList(new File("shared"));
-        
+
         jList1.setModel(new javax.swing.AbstractListModel<String>() {
-            String[] strings = fileList.toArray(new String[fileList.size()]);
+            String[] strings = { "Item 1", "Item 2", "Item 3", "Item 4", "Item 5" };
             public int getSize() { return strings.length; }
             public String getElementAt(int i) { return strings[i]; }
         });
@@ -56,8 +54,18 @@ public class ClientForm extends javax.swing.JFrame {
         jLabel2.setText("Available Files:");
 
         jButton1.setText("Download");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
 
         jButton2.setText("Search");
+        jButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton2ActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -96,6 +104,14 @@ public class ClientForm extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jButton2ActionPerformed
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jButton1ActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -127,7 +143,8 @@ public class ClientForm extends javax.swing.JFrame {
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
                 new ClientBroadcast(args[0]).start();
-                new ClientForm().setVisible(true);           
+                new ClientThread(fileList).start();
+                new ClientForm().setVisible(true);       
             }
         });
     }
@@ -148,9 +165,5 @@ public class ClientForm extends javax.swing.JFrame {
             	fileList.add(fileEntry.getName());
             }
         }
-    }
-    
-    public LinkedList<String> getFileList() {
-    	return fileList;
     }
 }

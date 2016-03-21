@@ -17,6 +17,7 @@ public class ClientBroadcast extends Thread {
     byte[] buf = null;
     String[] availableClients = null;
     InetAddress remoteServer = null;
+    LinkedList<String> fileList = new LinkedList<String>();
     
     public ClientBroadcast(String i) {
         try {
