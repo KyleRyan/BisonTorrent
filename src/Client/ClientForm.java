@@ -17,7 +17,7 @@ import java.util.logging.Logger;
  */
 public class ClientForm extends javax.swing.JFrame {
 
-	LinkedList<String> fileList = new LinkedList<String>();
+	private static LinkedList<String> fileList = new LinkedList<String>();
 	
     /**
      * Creates new form ClientForm
@@ -127,7 +127,8 @@ public class ClientForm extends javax.swing.JFrame {
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
                 new ClientBroadcast(args[0]).start();
-                new ClientForm().setVisible(true);           
+                new ClientThread(fileList).start();
+                new ClientForm().setVisible(true);       
             }
         });
     }
@@ -148,9 +149,5 @@ public class ClientForm extends javax.swing.JFrame {
             	fileList.add(fileEntry.getName());
             }
         }
-    }
-    
-    public LinkedList<String> getFileList() {
-    	return fileList;
     }
 }
