@@ -3,7 +3,7 @@ import java.net.Socket;
 import java.net.ServerSocket;
 import java.io.IOException;
 import java.util.Iterator;
-import java.util.LinkedList;;
+import java.util.concurrent.ConcurrentLinkedQueue;
 
 public class ThreadManager {
 	int portNumber;
@@ -18,7 +18,7 @@ public class ThreadManager {
 	}
 	public void run(){
 		System.out.println("NetProxy launched");
-		LinkedList<ProxyThread> threads = new LinkedList<ProxyThread>();
+		ConcurrentLinkedQueue<ProxyThread> threads = new ConcurrentLinkedQueue<ProxyThread>();
 		
 		try(ServerSocket listener = new ServerSocket(portNumber);){
 			Runtime.getRuntime().addShutdownHook(new Thread(){public void run(){
@@ -32,7 +32,7 @@ public class ThreadManager {
 					Socket connection = listener.accept();
 					ProxyThread thread = new ProxyThread(connection, loggingEnabled, loggingLocation);
 					thread.start();
-					threads.push(thread);
+					threads.add(thread);
 				}else{
 					for(Iterator<ProxyThread> iterator = threads.iterator(); iterator.hasNext();){
 						ProxyThread thread = iterator.next();
@@ -44,7 +44,7 @@ public class ThreadManager {
 					Socket connection = listener.accept();
 					ProxyThread thread = new ProxyThread(connection, loggingEnabled, loggingLocation);
 					thread.start();
-					threads.push(thread);
+					threads.add(thread);
 				}
 			}
 		}catch(IOException e){
