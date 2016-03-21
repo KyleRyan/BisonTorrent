@@ -120,8 +120,8 @@ public class ClientForm extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new ClientBroadcast(args[0]).start();
-                new ClientForm().setVisible(true);                
+                new ClientBroadcast(args[0], "shared").start();
+                new ClientForm().setVisible(true);           
             }
         });
     }
