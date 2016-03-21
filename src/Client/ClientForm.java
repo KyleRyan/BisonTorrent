@@ -5,7 +5,9 @@
  */
 package Client;
 
+import java.io.File;
 import java.io.IOException;
+import java.util.LinkedList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -15,6 +17,8 @@ import java.util.logging.Logger;
  */
 public class ClientForm extends javax.swing.JFrame {
 
+	LinkedList<String> fileList = new LinkedList<String>();
+	
     /**
      * Creates new form ClientForm
      */
@@ -39,9 +43,11 @@ public class ClientForm extends javax.swing.JFrame {
         jButton2 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-
+        
+        populateFileList(new File("shared"));
+        
         jList1.setModel(new javax.swing.AbstractListModel<String>() {
-            String[] strings = { "Item 1", "Item 2", "Item 3", "Item 4", "Item 5" };
+            String[] strings = fileList.toArray(new String[fileList.size()]);
             public int getSize() { return strings.length; }
             public String getElementAt(int i) { return strings[i]; }
         });
@@ -121,7 +127,7 @@ public class ClientForm extends javax.swing.JFrame {
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
                 new ClientBroadcast(args[0]).start();
-                new ClientForm().setVisible(true);                
+                new ClientForm().setVisible(true);           
             }
         });
     }
@@ -133,4 +139,18 @@ public class ClientForm extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTextField jTextField1;
     // End of variables declaration//GEN-END:variables
+    
+    private void populateFileList(final File folder) {
+        for (final File fileEntry : folder.listFiles()) {
+            if (fileEntry.isDirectory()) {
+            	populateFileList(fileEntry);
+            } else {
+            	fileList.add(fileEntry.getName());
+            }
+        }
+    }
+    
+    public LinkedList<String> getFileList() {
+    	return fileList;
+    }
 }

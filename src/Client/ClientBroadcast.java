@@ -1,9 +1,11 @@
 package Client;
 
+import java.io.File;
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
+import java.util.LinkedList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -15,7 +17,7 @@ public class ClientBroadcast extends Thread {
     byte[] buf = null;
     String[] availableClients = null;
     InetAddress remoteServer = null;
-
+    
     public ClientBroadcast(String i) {
         try {
             remoteServer = InetAddress.getByName(i);
@@ -27,17 +29,15 @@ public class ClientBroadcast extends Thread {
     public void run() {
         while (true) {
             try {
-                // get a datagram socket
-                socket = new DatagramSocket();
-
                 // send request
                 if ((System.nanoTime() - startTime) / 1e9 > 6) {
+                	socket = new DatagramSocket();
                     startTime = System.nanoTime();
                     buf = "HELLO".getBytes();
                     packet = new DatagramPacket(buf, buf.length, remoteServer, 9999);
                     socket.send(packet);
+                    socket.close();
                 }
-                socket.close();
             } catch (Exception e) {
             }
         }
