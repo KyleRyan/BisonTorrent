@@ -37,9 +37,9 @@ public class Server {
 		clientList.remove(i);
 	}
 
-	public synchronized static InetAddress[] find(String fileName) {
-		InetAddress[] clientsWithFile = (InetAddress[]) fileMappings.get(
-				fileName).toArray();
+	public synchronized static LinkedList<InetAddress> find(String fileName) {
+		LinkedList<InetAddress> clientsWithFile = new LinkedList<InetAddress>(
+				fileMappings.get(fileName));
 		return clientsWithFile;
 	}
 
