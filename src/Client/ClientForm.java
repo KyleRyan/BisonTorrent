@@ -147,7 +147,7 @@ public class ClientForm extends javax.swing.JFrame {
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
                 new ClientBroadcast(args[0]).start();
-                //new ClientThread(fileList).start();
+                new ClientThread(fileList).start();
                 new ClientFileListener().start();
                 new ClientForm().setVisible(true);       
             }

@@ -14,6 +14,7 @@ import java.net.ServerSocket;
 import java.net.Socket;
 import java.net.URL;
 import java.net.URLConnection;
+import java.net.UnknownHostException;
 import java.util.LinkedList;
 import java.util.StringTokenizer;
 import java.util.logging.Level;
@@ -35,19 +36,22 @@ public class ClientThread extends Thread {
     	OutputStream out = null;
     	ObjectOutputStream objout = null;
     	
-        try {
-        	if ((System.nanoTime() - startTime) / 1e9 > 6) {
-        		socket = new Socket("localhost", 9999);
-	        	out = socket.getOutputStream();
-	        	objout = new ObjectOutputStream(out);
-	        	Request req = new Request(0, fileList);
-	        	objout.writeObject(req);
-	        	objout.close();
-	        	out.close();
-	        	socket.close();
-        	}
+    	try {
+    		socket = new Socket("localhost", 10000);
+    		out = socket.getOutputStream();
+    		objout = new ObjectOutputStream(out);
+    		
+    		while(true) {
+	        	if ((System.nanoTime() - startTime) / 1e9 > 6) {
+	        		startTime = System.nanoTime();
+	        		System.out.println("Sending file list");
+		        	Request req = new Request(0, fileList);
+		        	objout.writeObject(req);
+	        	}
+    		}
 		} catch (IOException e) {
 			e.printStackTrace();
+			System.exit(0);
 		}
     }
 }

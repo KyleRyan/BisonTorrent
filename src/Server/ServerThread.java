@@ -27,9 +27,7 @@ public class ServerThread extends Thread {
 	public ServerThread(Socket socket) throws IOException {
 		super("ServerThread");
 		this.socket = socket;
-		this.address = InetAddress.getByName(socket.getRemoteSocketAddress()
-				.toString());
-
+		this.address = socket.getInetAddress();
 	}
 
 	public Serializable find(Serializable requestBody) {
@@ -65,42 +63,29 @@ public class ServerThread extends Thread {
 			ObjectInputStream ois = new ObjectInputStream(is);
 			ObjectOutputStream oos = new ObjectOutputStream(os);
 			while (true) {
-				Request request = (Request) ois.readObject();
-				if (request != null) {
-					switch (request.getRequestType()) {
-					case 0:
-						// Server.addFiles(address,
-						// (LinkedList<String>) request.getRequestBody());
-						break;
-					case 1:
-						Request response = new Request(2,
-								find(request.getRequestBody()));
-						oos.writeObject(response);
-						break;
+				if(ois.available() > 0){
+					Request request = (Request) ois.readObject();
+					if (request != null) {
+						switch (request.getRequestType()) {
+						case 0:
+							updateFiles(request.getRequestBody());
+							// Server.addFiles(address,
+							// (LinkedList<String>) request.getRequestBody());
+							break;
+						case 1:
+							Request response = new Request(2,
+									find(request.getRequestBody()));
+							oos.writeObject(response);
+							break;
+						}
 					}
+				} else {
+					Thread.sleep(1000);
 				}
 			}
 		} catch (Exception e) {
-			System.out.println(e);
+			//System.out.println(e);
+			e.printStackTrace();
 		}
-		// try {
-		// String clients = "None";
-		// for (Map.Entry<InetAddress, Long> entry :
-		// Server.clientList.entrySet()) {
-		// clients += entry.getKey();
-		// }
-		// byte[] buf = clients.getBytes();
-		// // send the list of clients to all clients
-		// for (Map.Entry<InetAddress, Long> entry :
-		// Server.clientList.entrySet()) {
-		// packet = new DatagramPacket(buf, buf.length, entry.getKey(), 10001);
-		// DatagramSocket sendSocket = new DatagramSocket();
-		// sendSocket.send(packet);
-		// sendSocket.close();
-		// }
-		// } catch (Exception e) {
-		// }
-		// socket.close();
-
 	}
 }

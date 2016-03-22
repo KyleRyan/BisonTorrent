@@ -3,6 +3,7 @@ package Server;
 import java.io.IOException;
 import java.net.InetAddress;
 import java.net.ServerSocket;
+import java.net.Socket;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -14,15 +15,25 @@ public class Server {
 	private static HashMap<String, HashSet<InetAddress>> fileMappings = new HashMap<String, HashSet<InetAddress>>();
 
 	public static void main(String[] args) throws IOException {
-		new ServerListen().start();
-		while (true) {
-			try {
-				new ServerThread(new ServerSocket(10000).accept()).start();
-			} catch (Exception e) {
-
+		
+		try(ServerSocket listener = new ServerSocket(10000);){
+			Runtime.getRuntime().addShutdownHook(new Thread(){public void run(){
+			    try {
+			        listener.close();
+			        System.out.println("The server is shut down!");
+			    } catch (IOException e) { /* failed */ }
+			}});
+			while(true){
+					System.out.println("doing stuff");
+					Socket connection = listener.accept();
+					ServerThread thread = new ServerThread(connection);
+					thread.start();
 			}
+		}catch(IOException e){
+			System.out.println(e.getMessage());
+			e.printStackTrace();
+			System.exit(0);
 		}
-
 	}
 
 	public synchronized static void addClient(InetAddress i, Long l) {
@@ -51,6 +62,7 @@ public class Server {
 			clientsWithFile.add(client);
 			fileMappings.put(file, clientsWithFile);
 		}
+		System.out.println("fileMappings: " + fileMappings.toString());
 	}
 
 	public synchronized static void removeFiles(InetAddress client,
