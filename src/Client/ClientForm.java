@@ -113,7 +113,7 @@ public class ClientForm extends javax.swing.JFrame {
     }
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        // TODO add your handling code here:
+        new ClientFileReceive("file2.txt", "localhost").start();
     }//GEN-LAST:event_jButton1ActionPerformed
 
     /**
