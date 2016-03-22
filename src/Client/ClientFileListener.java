@@ -2,8 +2,6 @@ package Client;
 
 import java.io.IOException;
 import java.net.ServerSocket;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 /*
  * To change this license header, choose License Headers in Project Properties.
@@ -23,7 +21,6 @@ public class ClientFileListener extends Thread {
     public void run() {
         try {
             serverSocket = new ServerSocket(10005);
-            System.out.println("Started on: ");
         } catch (IOException e) {
         }
 
