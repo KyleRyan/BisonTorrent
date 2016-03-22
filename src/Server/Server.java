@@ -15,21 +15,24 @@ public class Server {
 	private static HashMap<String, HashSet<InetAddress>> fileMappings = new HashMap<String, HashSet<InetAddress>>();
 
 	public static void main(String[] args) throws IOException {
-		
-		try(ServerSocket listener = new ServerSocket(10000);){
-			Runtime.getRuntime().addShutdownHook(new Thread(){public void run(){
-			    try {
-			        listener.close();
-			        System.out.println("The server is shut down!");
-			    } catch (IOException e) { /* failed */ }
-			}});
-			while(true){
-					System.out.println("doing stuff");
-					Socket connection = listener.accept();
-					ServerThread thread = new ServerThread(connection);
-					thread.start();
+
+		try (ServerSocket listener = new ServerSocket(10000);) {
+			Runtime.getRuntime().addShutdownHook(new Thread() {
+				public void run() {
+					try {
+						listener.close();
+						System.out.println("The server is shut down!");
+					} catch (IOException e) { /* failed */
+					}
+				}
+			});
+			while (true) {
+				System.out.println("doing stuff");
+				Socket connection = listener.accept();
+				ServerThread thread = new ServerThread(connection);
+				thread.start();
 			}
-		}catch(IOException e){
+		} catch (IOException e) {
 			System.out.println(e.getMessage());
 			e.printStackTrace();
 			System.exit(0);
@@ -55,7 +58,7 @@ public class Server {
 	}
 
 	public synchronized static void addFiles(InetAddress client,
-			LinkedList<String> files) {
+			HashSet<String> files) {
 		for (Iterator<String> iterator = files.iterator(); iterator.hasNext();) {
 			String file = iterator.next();
 			HashSet<InetAddress> clientsWithFile = fileMappings.get(file);
@@ -66,7 +69,7 @@ public class Server {
 	}
 
 	public synchronized static void removeFiles(InetAddress client,
-			LinkedList<String> files) {
+			HashSet<String> files) {
 		for (Iterator<String> iterator = files.iterator(); iterator.hasNext();) {
 			String file = iterator.next();
 			HashSet<InetAddress> clientsWithFile = fileMappings.get(file);
