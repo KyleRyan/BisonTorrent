@@ -43,9 +43,18 @@ public class ServerThread extends Thread {
 		try {
 			// determine files to add or remove
 
-			LinkedList<String> currentOwnedFiles = new LinkedList<String>(
+			HashSet<String> currentOwnedFiles = new HashSet<String>(
 					(Collection<? extends String>) requestBody);
-			Server.addFiles(address, currentOwnedFiles);
+
+			HashSet<String> filesToRemove = new HashSet<String>(ownedFiles);
+			filesToRemove.removeAll(currentOwnedFiles);
+			Server.removeFiles(address, filesToRemove);
+
+			HashSet<String> filesToAdd = new HashSet<String>(currentOwnedFiles);
+			filesToAdd.removeAll(ownedFiles);
+			Server.addFiles(address, filesToAdd);
+
+			// Server.addFiles(address, currentOwnedFiles);
 			// for(Iterator<String> iterator = currentOwnedFiles.iterator();
 			// iterator.hasNext();)
 			// Server.addFiles(address, files);
@@ -65,8 +74,8 @@ public class ServerThread extends Thread {
 			while (true) {
 				Request request = (Request) ois.readObject();
 				System.out.println(request.getRequestBody());
-				if(ois.available() > 0){
-					//Request request = (Request) ois.readObject();
+				if (ois.available() > 0) {
+					// Request request = (Request) ois.readObject();
 					if (request != null) {
 						switch (request.getRequestType()) {
 						case 0:
@@ -86,7 +95,7 @@ public class ServerThread extends Thread {
 				}
 			}
 		} catch (Exception e) {
-			//System.out.println(e);
+			// System.out.println(e);
 			e.printStackTrace();
 		}
 	}
