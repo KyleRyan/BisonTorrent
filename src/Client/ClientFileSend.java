@@ -2,6 +2,8 @@ package Client;
 
 import java.io.BufferedReader;
 import java.io.DataOutputStream;
+import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -35,7 +37,15 @@ public class ClientFileSend extends Thread {
             String fileName = "";
             System.out.println(in.readLine());
             System.out.println(fileName);
-
+            
+            out = new DataOutputStream(socket.getOutputStream());
+            byte[] by = new byte[BUFFER_SIZE];
+            File file = new File("./shared/"+fileName);
+//            file.
+//            for (int i = 0; i < by.length; i++) {
+//                out.write(by, );
+//            }
+//            out.write(, BUFFER_SIZE, BUFFER_SIZE);
             socket.close();
         } catch (IOException ex) {
             Logger.getLogger(ClientFileSend.class.getName()).log(Level.SEVERE, null, ex);
