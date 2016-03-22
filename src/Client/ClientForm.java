@@ -105,7 +105,7 @@ public class ClientForm extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-        // TODO add your handling code here:
+        new ClientFileReceive("file1.txt", "localhost").start();
     }//GEN-LAST:event_jButton2ActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
@@ -143,7 +143,8 @@ public class ClientForm extends javax.swing.JFrame {
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
                 new ClientBroadcast(args[0]).start();
-                new ClientThread(fileList).start();
+                //new ClientThread(fileList).start();
+                new ClientFileListener().start();
                 new ClientForm().setVisible(true);       
             }
         });

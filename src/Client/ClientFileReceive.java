@@ -6,6 +6,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.DatagramSocket;
+import java.net.InetAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.net.URL;
@@ -17,12 +18,13 @@ import java.util.logging.Logger;
 public class ClientFileReceive extends Thread {
 
     private Socket socket = null;
+    private String remote = "";
     private String fileName = "";
     private static final int BUFFER_SIZE = 32768;
 
-    public ClientFileReceive(String fileName) {
+    public ClientFileReceive(String fileName, String ip) {
         super("Receive");
-        socket = new Socket();
+        remote = ip;
         this.fileName = fileName;
     }
 
@@ -31,16 +33,9 @@ public class ClientFileReceive extends Thread {
         BufferedReader in = null;
 
         try {
-
-            in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-
-            String fileName = "";
-            try {
-                while ((fileName = in.readLine()) != null) {
-                }
-            } catch (Exception e) {
-            }
-            System.out.println(fileName);
+            socket = new Socket(InetAddress.getByName(remote), 10005);
+            out = new DataOutputStream(socket.getOutputStream());
+            out.writeBytes(fileName);
 
             socket.close();
         } catch (IOException ex) {
