@@ -63,8 +63,10 @@ public class ServerThread extends Thread {
 			ObjectInputStream ois = new ObjectInputStream(is);
 			ObjectOutputStream oos = new ObjectOutputStream(os);
 			while (true) {
+				Request request = (Request) ois.readObject();
+				System.out.println(request.getRequestBody());
 				if(ois.available() > 0){
-					Request request = (Request) ois.readObject();
+					//Request request = (Request) ois.readObject();
 					if (request != null) {
 						switch (request.getRequestType()) {
 						case 0:

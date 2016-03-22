@@ -147,6 +147,7 @@ public class ClientForm extends javax.swing.JFrame {
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
                 new ClientBroadcast(args[0]).start();
+                populateFileList(new File("shared"));
                 new ClientThread(fileList).start();
                 new ClientFileListener().start();
                 new ClientForm().setVisible(true);       
@@ -162,7 +163,7 @@ public class ClientForm extends javax.swing.JFrame {
     private javax.swing.JTextField jTextField1;
     // End of variables declaration//GEN-END:variables
     
-    private void populateFileList(final File folder) {
+    private static void populateFileList(final File folder) {
         for (final File fileEntry : folder.listFiles()) {
             if (fileEntry.isDirectory()) {
             	populateFileList(fileEntry);
