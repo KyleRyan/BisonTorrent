@@ -12,6 +12,8 @@ import java.util.LinkedList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import javax.swing.DefaultListModel;
+
 /**
  *
  * @author philippy
@@ -21,6 +23,7 @@ public class ClientForm extends javax.swing.JFrame {
 	private static LinkedList<String> fileList = new LinkedList<String>();
 	private LinkedList<InetAddress> peerList = null;
 	private static ClientThread clientThread = null;
+	private DefaultListModel listModel = new DefaultListModel();
 	
     /**
      * Creates new form ClientForm
@@ -46,12 +49,8 @@ public class ClientForm extends javax.swing.JFrame {
         jButton2 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-
-        jList1.setModel(new javax.swing.AbstractListModel<String>() {
-            String[] strings = {};
-            public int getSize() { return strings.length; }
-            public String getElementAt(int i) { return strings[i]; }
-        });
+        
+        jList1.setModel(listModel);
         jScrollPane1.setViewportView(jList1);
 
         jLabel2.setText("Available Files:");
@@ -112,13 +111,16 @@ public class ClientForm extends javax.swing.JFrame {
     	if(!text.isEmpty()) {
     		ClientSearch cs = new ClientSearch();
     		peerList = cs.searchDirectory(clientThread.getOutputStream(), clientThread.getInputStream(), text);
-    		//System.out.println(peerList.toString());
+    		for(InetAddress peer : peerList)
+    			listModel.addElement(text + " " + peer.toString());
     	}
     }
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        new ClientFileReceive("file2.txt", "localhost").start();
-    }//GEN-LAST:event_jButton1ActionPerformed
+    	String text = jTextField1.getText();
+    	for(InetAddress peer : peerList)
+    		new ClientFileReceive(text, peer).start();
+    }
 
     /**
      * @param args the command line arguments
