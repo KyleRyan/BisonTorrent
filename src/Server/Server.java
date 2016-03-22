@@ -62,6 +62,9 @@ public class Server {
 		for (Iterator<String> iterator = files.iterator(); iterator.hasNext();) {
 			String file = iterator.next();
 			HashSet<InetAddress> clientsWithFile = fileMappings.get(file);
+			if(clientsWithFile == null)
+				clientsWithFile = new HashSet<InetAddress>();
+			System.out.println("Client " + client + "File " + file + "clients with file" + clientsWithFile);
 			clientsWithFile.add(client);
 			fileMappings.put(file, clientsWithFile);
 		}

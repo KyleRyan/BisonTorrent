@@ -43,9 +43,17 @@ public class ServerThread extends Thread {
 		try {
 			// determine files to add or remove
 
-			HashSet<String> currentOwnedFiles = new HashSet<String>(
+			LinkedList<String> tempVar = new LinkedList<String>(
 					(Collection<? extends String>) requestBody);
-
+			System.out.println("tempVar: " + tempVar);
+			HashSet<String> currentOwnedFiles = new HashSet<String>();
+			for(String var : tempVar){
+				System.out.println(var);
+				currentOwnedFiles.add(var);
+			}
+			
+			System.out.println(currentOwnedFiles.toString());
+			
 			HashSet<String> filesToRemove = new HashSet<String>(ownedFiles);
 			filesToRemove.removeAll(currentOwnedFiles);
 			Server.removeFiles(address, filesToRemove);
@@ -60,7 +68,7 @@ public class ServerThread extends Thread {
 			// Server.addFiles(address, files);
 			// Server.removeFiles(address, files);
 		} catch (Exception e) {
-			System.out.println("Error " + e.getMessage());
+			e.printStackTrace();
 		}
 	}
 
@@ -74,9 +82,10 @@ public class ServerThread extends Thread {
 			while (true) {
 				Request request = (Request) ois.readObject();
 				System.out.println(request.getRequestBody());
-				if (ois.available() > 0) {
+				//if (ois.available() > 0) {
 					// Request request = (Request) ois.readObject();
 					if (request != null) {
+						System.out.println("Request Type: " + request.getRequestType());
 						switch (request.getRequestType()) {
 						case 0:
 							updateFiles(request.getRequestBody());
@@ -86,13 +95,14 @@ public class ServerThread extends Thread {
 						case 1:
 							Request response = new Request(2,
 									find(request.getRequestBody()));
+							System.out.println("Responds is " + response.getRequestBody());
 							oos.writeObject(response);
 							break;
 						}
 					}
-				} else {
-					Thread.sleep(1000);
-				}
+				//} else {
+				Thread.sleep(1000);
+				//}
 			}
 		} catch (Exception e) {
 			// System.out.println(e);

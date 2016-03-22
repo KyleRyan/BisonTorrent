@@ -20,6 +20,7 @@ public class ClientForm extends javax.swing.JFrame {
 
 	private static LinkedList<String> fileList = new LinkedList<String>();
 	private LinkedList<InetAddress> peerList = null;
+	private static ClientThread clientThread = null;
 	
     /**
      * Creates new form ClientForm
@@ -107,9 +108,12 @@ public class ClientForm extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {
-    	ClientSearch cs = new ClientSearch();
-    	peerList = cs.searchDirectory(jTextField1.getText());
-    	System.out.println(peerList.toString());
+    	String text = jTextField1.getText();
+    	if(!text.isEmpty()) {
+    		ClientSearch cs = new ClientSearch();
+    		peerList = cs.searchDirectory(clientThread.getOutputStream(), clientThread.getInputStream(), text);
+    		//System.out.println(peerList.toString());
+    	}
     }
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
@@ -148,7 +152,8 @@ public class ClientForm extends javax.swing.JFrame {
             public void run() {
                 new ClientBroadcast(args[0]).start();
                 populateFileList(new File("shared"));
-                new ClientThread(fileList).start();
+                clientThread = new ClientThread(fileList);
+                clientThread.start();
                 new ClientFileListener().start();
                 new ClientForm().setVisible(true);       
             }

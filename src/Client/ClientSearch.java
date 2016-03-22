@@ -12,30 +12,17 @@ import java.util.LinkedList;
 
 public class ClientSearch {
 	
-	public LinkedList<InetAddress> searchDirectory(String file) {
+	public LinkedList<InetAddress> searchDirectory(ObjectOutputStream objout, ObjectInputStream objin, String file) {
 		LinkedList<InetAddress> peerList = null;
 		
         try {
-    		Socket socket = new Socket("localhost", 9999);
-    		OutputStream out = socket.getOutputStream();
-        	ObjectOutputStream objout = new ObjectOutputStream(out);
-        	Request req = new Request(0, file);
+        	Request req = new Request(1, file);
         	objout.writeObject(req);
-        	objout.close();
-        	out.close();
-        	socket.close();
         	
-        	ServerSocket serverResponds = new ServerSocket(9998);
-        	Socket s = serverResponds.accept();
-        	InputStream in = s.getInputStream();
-        	ObjectInputStream objin = new ObjectInputStream(in);
         	Request r = (Request)objin.readObject();
         	if(r.getRequestType() == 2) {
         		peerList = (LinkedList<InetAddress>) r.getRequestBody();
         	}
-        	in.close();
-        	s.close();
-        	serverResponds.close();
 		} catch (IOException | ClassNotFoundException e) {
 			e.printStackTrace();
 		}
