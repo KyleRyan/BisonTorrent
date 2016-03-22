@@ -7,6 +7,7 @@ package Client;
 
 import java.io.File;
 import java.io.IOException;
+import java.net.InetAddress;
 import java.util.LinkedList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -18,6 +19,7 @@ import java.util.logging.Logger;
 public class ClientForm extends javax.swing.JFrame {
 
 	private static LinkedList<String> fileList = new LinkedList<String>();
+	private LinkedList<InetAddress> peerList = null;
 	
     /**
      * Creates new form ClientForm
@@ -45,7 +47,7 @@ public class ClientForm extends javax.swing.JFrame {
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
         jList1.setModel(new javax.swing.AbstractListModel<String>() {
-            String[] strings = { "Item 1", "Item 2", "Item 3", "Item 4", "Item 5" };
+            String[] strings = {};
             public int getSize() { return strings.length; }
             public String getElementAt(int i) { return strings[i]; }
         });
@@ -104,9 +106,11 @@ public class ClientForm extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-        new ClientFileReceive("file1.txt", "localhost").start();
-    }//GEN-LAST:event_jButton2ActionPerformed
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {
+    	ClientSearch cs = new ClientSearch();
+    	peerList = cs.searchDirectory(jTextField1.getText());
+    	System.out.println(peerList.toString());
+    }
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         // TODO add your handling code here:
