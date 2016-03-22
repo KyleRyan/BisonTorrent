@@ -33,11 +33,7 @@ public class ClientFileSend extends Thread {
             in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
 
             String fileName = "";
-            try {
-                while ((fileName = in.readLine()) != null) {
-                }
-            } catch (Exception e) {
-            }
+            System.out.println(in.readLine());
             System.out.println(fileName);
 
             socket.close();

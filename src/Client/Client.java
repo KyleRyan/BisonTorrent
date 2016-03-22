@@ -51,7 +51,7 @@ public class Client {
 //            }
 
             try {
-                new ClientThread("ClientServer").start();
+                //new ClientThread().start();
             } catch (Exception e) {
             }
         }
