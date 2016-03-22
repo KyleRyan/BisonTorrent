@@ -10,6 +10,8 @@ import java.io.OutputStream;
 import java.io.Serializable;
 import java.net.InetAddress;
 import java.net.Socket;
+import java.util.Collection;
+import java.util.HashSet;
 import java.util.LinkedList;
 
 import Client.Request;
@@ -20,6 +22,7 @@ public class ServerThread extends Thread {
 	public BufferedReader in = null;
 	public BufferedWriter out = null;
 	public InetAddress address = null;
+	public HashSet<String> ownedFiles = new HashSet<String>();
 
 	public ServerThread(Socket socket) throws IOException {
 		super("ServerThread");
@@ -42,7 +45,11 @@ public class ServerThread extends Thread {
 		try {
 			// determine files to add or remove
 
-			// HashSet<String>()
+			LinkedList<String> currentOwnedFiles = new LinkedList<String>(
+					(Collection<? extends String>) requestBody);
+			Server.addFiles(address, currentOwnedFiles);
+			// for(Iterator<String> iterator = currentOwnedFiles.iterator();
+			// iterator.hasNext();)
 			// Server.addFiles(address, files);
 			// Server.removeFiles(address, files);
 		} catch (Exception e) {
