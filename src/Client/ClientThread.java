@@ -5,6 +5,7 @@ import java.io.InputStream;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.OutputStream;
+import java.net.InetAddress;
 import java.net.Socket;
 import java.util.LinkedList;
 
@@ -15,15 +16,17 @@ public class ClientThread extends Thread {
     private ObjectInputStream objin = null;
     long startTime = -60000000000l;
     LinkedList<String> fileList;
+    InetAddress net;
     
-    public ClientThread(LinkedList<String> files) {
+    public ClientThread(LinkedList<String> files, InetAddress net) {
         super("client-thread");
         fileList = files;
+        this.net = net;
     }
 
     public void run() {
     	try {
-    		socket = new Socket("localhost", 10000);
+    		socket = new Socket(net, 10000);
     		OutputStream out = socket.getOutputStream();
     		objout = new ObjectOutputStream(out);
     		InputStream in = socket.getInputStream();

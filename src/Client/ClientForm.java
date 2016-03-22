@@ -8,6 +8,7 @@ package Client;
 import java.io.File;
 import java.io.IOException;
 import java.net.InetAddress;
+import java.net.UnknownHostException;
 import java.util.LinkedList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -154,7 +155,11 @@ public class ClientForm extends javax.swing.JFrame {
             public void run() {
                 new ClientBroadcast(args[0]).start();
                 populateFileList(new File("shared"));
-                clientThread = new ClientThread(fileList);
+                try {
+					clientThread = new ClientThread(fileList, InetAddress.getByName(args[0]));
+				} catch (UnknownHostException e) {
+					e.printStackTrace();
+				}
                 clientThread.start();
                 new ClientFileListener().start();
                 new ClientForm().setVisible(true);       
