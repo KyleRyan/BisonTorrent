@@ -121,7 +121,8 @@ public class ClientForm extends javax.swing.JFrame {
     	String text = jTextField1.getText();
     	for(InetAddress peer : peerList)
     		new ClientFileReceive(text, peer).start();
-    	listModel.removeAllElements();
+    	jList1.clearSelection();
+    	listModel.clear();
     }
 
     /**
