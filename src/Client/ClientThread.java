@@ -34,7 +34,7 @@ public class ClientThread extends Thread {
     		
     		
     		while(true) {
-	        	if ((System.nanoTime() - startTime) / 1e9 > 6) {
+	        	if ((System.nanoTime() - startTime) / 1e9 > 10) {
 	        		startTime = System.nanoTime();
 	        		System.out.println("Sending file list");
 		        	Request req = new Request(0, fileList);

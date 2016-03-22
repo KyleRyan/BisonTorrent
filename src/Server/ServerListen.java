@@ -38,7 +38,7 @@ public class ServerListen extends Thread {
                     : clientList.entrySet()) {
                 key = entry.getKey();
                 Long value = entry.getValue();
-                if ((System.nanoTime() - value) / 1e9 > 20) {
+                if ((System.nanoTime() - value) / 1e9 > 200) {
                     delete = true;
                     break;
                 }
